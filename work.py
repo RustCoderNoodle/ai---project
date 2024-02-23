@@ -11,8 +11,9 @@ class CustomDataset(Dataset):
         self.max_length = max_length
 
     def load_data(self, data_file_path):
-        # Implement data loading logic here
-        pass
+        with data_file_path.open(data_file_path, "r") as file:
+            data = file.readlines()
+        return data
 
     def __len__(self):
         return len(self.data)
@@ -28,39 +29,44 @@ class CustomDataset(Dataset):
 # Set up tokenizer and model
 tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6b")
 model = AutoModelForCausalLM.from_pretrained("EleutherAI/gpt-j-6b")
+# define the function for the dataset loading
+def gpt_model(data_file_path, max_length=128):
 
-# Initialize dataset
-data_file_path = "path/to/your/dataset.txt"
-dataset = CustomDataset(tokenizer, data_file_path)
+    # Initialize dataset
+    data_file_path = "path/to/your/dataset.zip"
+    dataset = CustomDataset(tokenizer, data_file_path)
 
-# Initialize DataLoader
-batch_size = 4
-dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    # Initialize DataLoader
+    batch_size = 4
+    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
-# Define optimizer
-optimizer = AdamW(model.parameters(), lr=5e-5)
+    # Define optimizer
+    optimizer = AdamW(model.parameters(), lr=5e-5)
 
-# Training loop
-num_epochs = 3
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model.to(device)
+    # Training loop
+    num_epochs = 3
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
 
-for epoch in range(num_epochs):
-    print(f"Epoch {epoch + 1}/{num_epochs}")
-    model.train()
+    for epoch in range(num_epochs):
+        print(f"Epoch {epoch + 1}/{num_epochs}")
+        model.train()
 
     for batch in dataloader:
         batch = batch.to(device)
 
-        # Forward pass
+    # Forward pass
         outputs = model(input_ids=batch, labels=batch)
         loss = outputs.loss
 
-        # Backward pass
+    # Backward pass
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
 
         print(f"Loss: {loss.item()}")
 
-print("Training finished.")
+    print("Training finished.")
+data_file_path = r"C:\Users\noodle\Documents\GitHub\ai---project\next-word-prediction.zip"
+gpt_model(data_file_path)
+
