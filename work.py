@@ -67,6 +67,6 @@ def gpt_model(data_file_path, max_length=128):
         print(f"Loss: {loss.item()}")
 
     print("Training finished.")
-data_file_path = r"C:\Users\noodle\Documents\GitHub\ai---project\next-word-prediction.zip"
+data_file_path = r"C:\Users\noodle\Documents\GitHub\ai---project\NER dataset.csv"
 gpt_model(data_file_path)
 
