@@ -1,11 +1,15 @@
 import torch
+import os
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from PIL import Image
 import pytesseract
+from torchvision.io import read_image
 
 # Initialize tokenizer and model
 tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6b")
 model = AutoModelForCausalLM.from_pretrained("EleutherAI/gpt-j-6b")
+
+print("model loaded")
 
 # Function to convert image to text using OCR
 def imagetotext(image_path):
@@ -21,7 +25,12 @@ def processwithgpt(text):
     return generated_text
 
 # Example usage
-image_path = "path_to_your_handwritten_image.jpg"
-text_from_image = imagetotext(image_path)
-generated_input = processwithgpt(text_from_image)
-print("Generated input from GPT-J:", generated_input)
+# image_path = os.listdir("C:/Users/noodle/Documents/GitHub/ai---project/test_v2/test")
+# text_from_image = imagetotext(image_path)
+#
+# generated_input = processwithgpt(text_from_image)
+# print("Generated input from GPT-J:", generated_input)
+
+
+other_text = processwithgpt("say hello")
+print("Other text from GPT-J: ", other_text)
