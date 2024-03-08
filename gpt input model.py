@@ -32,5 +32,5 @@ def processwithgpt(text):
 # print("Generated input from GPT-J:", generated_input)
 
 
-other_text = processwithgpt("say hello")
+other_text = processwithgpt("whhat is the best drug ")
 print("Other text from GPT-J: ", other_text)
