@@ -9,7 +9,13 @@ from torchvision.io import read_image
 tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6b")
 model = AutoModelForCausalLM.from_pretrained("EleutherAI/gpt-j-6b")
 
-print("model loaded")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+print("model loaded, device: ", device)
+
+model = model.to(device)
+
+# Move the model to the deivec
 
 # Function to convert image to text using OCR
 def imagetotext(image_path):
@@ -19,7 +25,7 @@ def imagetotext(image_path):
 
 # Function to process text through GPT-J
 def processwithgpt(text):
-    input_ids = tokenizer.encode(text, return_tensors="pt")
+    input_ids = tokenizer.encode(text, return_tensors="pt").to(device)
     outputs = model.generate(input_ids, max_length=50, num_return_sequences=1)
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return generated_text
@@ -32,5 +38,5 @@ def processwithgpt(text):
 # print("Generated input from GPT-J:", generated_input)
 
 
-other_text = processwithgpt("whhat is the best drug ")
+other_text = processwithgpt("what is the best drug ")
 print("Other text from GPT-J: ", other_text)
