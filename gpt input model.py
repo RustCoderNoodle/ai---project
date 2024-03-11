@@ -5,15 +5,19 @@ from PIL import Image
 import pytesseract
 from torchvision.io import read_image
 
-# Initialize tokenizer and model
-tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6b")
-model = AutoModelForCausalLM.from_pretrained("EleutherAI/gpt-j-6b")
-
+# capture correct device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# Initialize tokenizer and model
+# tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6b")
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
+
+print('tokenizer loaded')
+# model = AutoModelForCausalLM.from_pretrained("EleutherAI/gpt-j-6b").to(device)
+model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf").to(device)
 
 print("model loaded, device: ", device)
 
-model = model.to(device)
 
 # Move the model to the deivec
 
